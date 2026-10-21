@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>山海银信 · 用AI让边境口头交易有凭可依</title>
+<title>山海银信——AI让边境口头交易有凭可依</title>
 <style id="appStyle">
 /* ================= tokens ================= */
 :root{
@@ -157,6 +157,20 @@ main{position:relative;z-index:1;padding:0 0 60px;min-height:calc(100vh - 64px)}
 .uc-edit{margin-left:auto;font-size:11px;padding:1.5px 7px;border-radius:5px;border:1px solid #C9D5EE;background:#fff;color:var(--ai);font-weight:600;flex:0 0 auto}
 .uc-edit:hover{border-color:var(--ai);background:var(--ai-l)}
 .und-editnote{font-size:12px;color:var(--ai);background:var(--ai-l);border:1px solid #D9E0F4;border-radius:7px;padding:6px 10px;line-height:1.7;margin:-2px 0 10px}
+
+/* 深化两层：承诺强度分级 ＋ 履约进度提取 */
+.und-deep{margin-top:11px;padding:10px 12px;border:1px solid #D9E0F4;border-radius:10px;background:linear-gradient(160deg,#F7F9FE,#FDFEFF)}
+.ud-t{font-size:12.5px;font-weight:700;color:var(--ai-d);margin-bottom:8px}
+.ud-l{margin-bottom:6px}
+.ud-l:last-child{margin-bottom:0}
+.ud-l b{font-size:11.5px;color:var(--ai);display:block;margin-bottom:5px}
+.ud-b{display:flex;flex-wrap:wrap;gap:5px}
+.sitem{display:inline-flex;align-items:center;gap:5px;max-width:100%;font-size:11.5px;padding:2px 9px;border-radius:99px;border:1px solid #CFE3D9;background:#F1F8F4;color:var(--jade)}
+.sitem.soft{border-color:#EFE0C6;background:var(--gold-l);color:var(--gold-d)}
+.sitem i{font-style:normal;color:var(--ink-3);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pitem{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;padding:2px 9px;border-radius:99px;border:1px solid #D9E0F4;background:#fff;color:var(--ai)}
+.pitem em{font-style:normal;color:var(--ink-3);margin-right:2px}
+.pitem s{text-decoration:none;font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
 .uc-h b{font-size:13.5px;color:var(--ink)}
 .uc-h .badge{margin-left:auto}
 .uci{display:flex;align-items:flex-start;gap:6px;padding:4px 0;font-size:13px;color:var(--ink-2);line-height:1.55;flex-wrap:wrap}
@@ -1012,14 +1026,14 @@ const SEED = [
 `2026-08-12 09:14 黄先生：老板，这批金枕榴莲什么规格？几A果？
 2026-08-12 09:16 黎氏某：这批是A果，越南金枕，一车800件
 2026-08-12 09:17 黄先生：单价多少？总价怎么算？
-2026-08-12 09:18 黎氏某：单价620一件，一共800件，货款总共50万
+2026-08-12 09:18 黎氏某：单价625一件，一共800件，货款总共50万
 2026-08-12 09:19 黄先生：好，货款我先转你，说好一个月内发货
 2026-08-12 09:20 黎氏某：收到，一个月内发货`,
        contentVi:
 `2026-08-12 09:14 Ông Hoàng: Anh ơi, lô sầu riêng Monthong này quy cách thế nào? Loại mấy A?
 2026-08-12 09:16 Bà Lê Thị: Lô này loại A, sầu riêng Monthong Việt Nam, một xe 800 kiện
 2026-08-12 09:17 Ông Hoàng: Đơn giá bao nhiêu? Tổng giá tính sao?
-2026-08-12 09:18 Bà Lê Thị: Đơn giá 620 một kiện, tổng 800 kiện, tiền hàng 50 vạn
+2026-08-12 09:18 Bà Lê Thị: Đơn giá 625 một kiện, tổng 800 kiện, tiền hàng 50 vạn
 2026-08-12 09:19 Ông Hoàng: Được, tôi chuyển tiền hàng trước, hẹn trong một tháng giao hàng
 2026-08-12 09:20 Bà Lê Thị: Đã nhận, trong một tháng sẽ giao hàng`},
       {ts:'2026-08-12T09:21:00+08:00', kind:'chat', content:
@@ -1613,7 +1627,7 @@ function renderTopbar(){
   setHTML($('#topbar'),
     '<div class="tb-in">' +
       '<div class="brand" data-act="home"><div class="seal"><span>信</span></div>' +
-        '<div><b>山海银信</b><i>' + T('用AI让边境口头交易有凭可依', 'Dùng AI để giao dịch miệng biên giới có căn cứ') + '</i></div></div>' +
+        '<div><b>山海银信</b><i>' + T('AI让边境口头交易有凭可依', 'AI giúp giao dịch miệng biên giới có căn cứ') + '</i></div></div>' +
       '<div class="crumbs">' + crumbs + '</div>' +
       '<div class="tb-r">' +
         '<button class="btn-back" data-act="back" ' + (S.hist.length ? '' : 'disabled') + '>← ' + T('返回', 'Quay lại') + '</button>' +
@@ -1724,7 +1738,7 @@ function svgSlide(i){
 function vL1(){
   const s = SLIDES[S.slide][S.lang];
   const dots = SLIDES.map((_, i) => '<button class="' + (i === S.slide ? 'on' : '') + '" data-act="dot" data-i="' + i + '" aria-label="' + (i+1) + '"></button>').join('');
-  return '<div class="l1"><div class="l1-slogan">' + T('技术做"银行"，让"AI"跨越山海', 'Công nghệ làm "ngân hàng", để "AI" vượt núi sông') + '</div><div class="deck" id="deck"><div class="deck-card">' +
+  return '<div class="l1"><div class="l1-slogan">' + T('技术"银信"，让"AI"跨越山海', 'Công nghệ làm "Ngân Tín", để "AI" vượt núi sông') + '</div><div class="deck" id="deck"><div class="deck-card">' +
     '<div class="slide on' + (S.slideDir < 0 ? ' rev' : '') + '">' +
       '<div class="sl-vis">' + svgSlide(S.slide) + '</div>' +
       '<div class="sl-txt">' +
@@ -1780,7 +1794,7 @@ function vL2(){
     '<div class="l2-h"><div class="kick">' + T('第 2 层 · 入口', 'Tầng 2 · Đăng nhập') + '</div>' +
       '<h1>' + T('你是谁，决定你看到什么', 'Bạn là ai quyết định bạn thấy gì') + '</h1>' +
       '<p>' + T('存证的人只看自己的案子，调解的人只看进来的案子。同一个系统，两种视角。', 'Người lưu chứng cứ chỉ thấy vụ của mình, người hòa giải chỉ thấy vụ được đưa tới. Một hệ thống, hai góc nhìn.') + '</p>' +
-      '<div class="slogan"><span class="sdot"></span>' + T('技术做"银行"，让"AI"跨越山海', 'Công nghệ làm "ngân hàng", để "AI" vượt núi sông') + '</div></div>' +
+      '<div class="slogan"><span class="sdot"></span>' + T('技术"银信"，让"AI"跨越山海', 'Công nghệ làm "Ngân Tín", để "AI" vượt núi sông') + '</div></div>' +
     '<div class="roles">' +
       roleCard('citizen', T('边民 · 存证', 'Người dân · Lưu chứng cứ'), 'CITIZEN', 
         T('把说好的事，在还说得清的时候固定下来。三步：选材料、录内容、一键存证。', 'Cố định điều đã thỏa thuận khi còn nói rõ được. Ba bước: chọn tài liệu, nhập nội dung, lưu chứng cứ.'),
@@ -1914,7 +1928,7 @@ function czStep2(){
         '<div class="fhash">' + T('原件指纹', 'Dấu vân tay ảnh gốc') + ' ' + esc((S.cz.photoHash || '').slice(0, 48)) + '… · ' + esc(S.cz.photoName || '') + '</div>' : '') +
       '<div style="margin-top:12px"><label style="font-size:13px;color:var(--ink-3);display:block;margin-bottom:5px">' +
         T('单据文字（OCR 结果可手动更正，仅用于检索与报告摘要）', 'Chữ trên chứng từ (sửa được kết quả OCR, chỉ dùng để tìm kiếm và tóm tắt báo cáo)') + '</label>' +
-        '<textarea class="ta" id="czInput" data-bind="cz.ocr" style="min-height:92px;font-size:14px" placeholder="' + T('如：送货单 金枕榴莲 800件 单价620元 合计496000元 交货日期9月5日', 'Ví dụ: Phiếu giao hàng, sầu riêng Monthong 800 kiện, đơn giá 620 tệ, tổng 496.000 tệ, ngày giao 5/9') + '">' + esc(S.cz.ocr) + '</textarea></div>' +
+        '<textarea class="ta" id="czInput" data-bind="cz.ocr" style="min-height:92px;font-size:14px" placeholder="' + T('如：送货单 金枕榴莲 800件 单价625元 合计500000元 交货日期9月5日', 'Ví dụ: Phiếu giao hàng, sầu riêng Monthong 800 kiện, đơn giá 625 tệ, tổng 500.000 tệ, ngày giao 5/9') + '">' + esc(S.cz.ocr) + '</textarea></div>' +
       '<div class="hint"><b>' + T('原件为凭', 'Ảnh gốc là căn cứ') + '</b><span>' + T('转录错了不影响效力——将来验证的是这张原图的指纹，不是这段文字。', 'Chép sai không ảnh hưởng hiệu lực — sau này kiểm tra là dấu vân tay của ảnh gốc, không phải đoạn chữ này.') + '</span></div>';
   }
   return czCaseBar() +
@@ -2218,8 +2232,8 @@ async function onPhoto(file){
     fr.onload = () => res(fr.result);
     fr.readAsDataURL(file);
   });
-  if (!S.cz.ocr) S.cz.ocr = T('送货单：金枕榴莲 800件，单价620元，货款合计496000元，交货日期9月5日',
-    'Phiếu giao hàng: sầu riêng Monthong 800 kiện, đơn giá 620 tệ, tổng 496.000 tệ, ngày giao 5/9');
+  if (!S.cz.ocr) S.cz.ocr = T('送货单：金枕榴莲 800件，单价625元，货款合计500000元，交货日期9月5日',
+    'Phiếu giao hàng: sầu riêng Monthong 800 kiện, đơn giá 625 tệ, tổng 500.000 tệ, ngày giao 5/9');
   render();
   const c = currentCase();
   const pre = desensitize(S.cz.ocr, c);
@@ -2697,7 +2711,7 @@ function buildReport(c){
   };
 
   return '<div class="sheet" id="reportSheet">' +
-    '<div class="rh"><div class="org">' + T('山海银信 · 用AI让边境口头交易有凭可依', 'NGÂN TÍN SƠN HẢI · GIAO DỊCH MIỆNG CÓ CĂN CỨ NHỜ AI') + '</div>' +
+    '<div class="rh"><div class="org">' + T('山海银信——AI让边境口头交易有凭可依', 'NGÂN TÍN SƠN HẢI — GIAO DỊCH MIỆNG CÓ CĂN CỨ NHỜ AI') + '</div>' +
       '<h1>' + T('案 情 分 析 报 告', 'BÁO CÁO PHÂN TÍCH VỤ VIỆC') + '</h1>' +
       '<div class="sub">' + T('CASE ANALYSIS REPORT · 供调解参考，不构成法律意见', 'Dùng tham khảo hòa giải, không phải ý kiến pháp lý') + '</div></div>' +
     '<div class="rno"><span>' + T('报告编号 ','Số báo cáo ') + rno + '</span><span>' + T('生成时间 ','Thời điểm tạo ') + dtTxt + '</span></div>' +
@@ -2755,7 +2769,7 @@ function buildReport(c){
       'Xem trước dữ liệu gửi mô hình (đã khử nhận dạng, bản chính thức chỉ phần này gửi đi)') + '</summary>' +
       '<pre>' + esc(JSON.stringify(payload, null, 2)) + '</pre></details>' +
 
-    '<div class="sig"><div>' + T('生成机构：山海银信 · 用AI让边境口头交易有凭可依','Cơ quan tạo: Ngân Tín Sơn Hải · Dùng AI để giao dịch miệng biên giới có căn cứ') + '<br>' +
+    '<div class="sig"><div>' + T('生成机构：山海银信——AI让边境口头交易有凭可依','Cơ quan tạo: Ngân Tín Sơn Hải — AI giúp giao dịch miệng biên giới có căn cứ') + '<br>' +
       T('数据来源：边民端主动存证记录 ','Nguồn: bản ghi do người dân tự lưu, ') + a.recs.length + T(' 条',' mục') + '</div>' +
       '<div style="text-align:right">' + T('调解员签收：＿＿＿＿＿＿','Hòa giải viên ký nhận: ＿＿＿＿＿＿') + '<br>' + rno + '</div></div>' +
     '<div class="disc">' + T(
@@ -2766,10 +2780,10 @@ function buildReport(c){
 }
 /* =========================================================================
    第四层 · 深入层
-   边民：我的存证 / 十三要素体检 / 存证指引 / AI 内核
-   调解员：关键词库 / 合规与架构 / AI 内核 / 完整性自检
+   边民：我的存证 / 十三要素体检 / 存证指引 / 关键词库 / AI 理解层
+   调解员：关键词库 / 合规与架构 / AI 内核 / 完整性自检 / AI 理解层
    ========================================================================= */
-function deepTabs(){ return S.role === 'mediator' ? ['keywords','compliance','ai','und','selfcheck'] : ['records','audit','guide','ai','und']; }
+function deepTabs(){ return S.role === 'mediator' ? ['keywords','compliance','ai','und','selfcheck'] : ['records','audit','guide','keywords','ai','und']; }
 function vDeep(){
   const tab = S.deep.tab || defaultDeepTab();
   const body = tab === 'records' ? dpRecords()
@@ -2797,6 +2811,7 @@ function deepNav(){
     mk('records', ICON.doc, '我的存证', 'Chứng cứ của tôi') +
     mk('audit', ICON.check, '十三要素体检', 'Kiểm tra 13 yếu tố') +
     mk('guide', ICON.book, '存证指引', 'Hướng dẫn lưu chứng cứ') +
+    mk('keywords', ICON.key, '关键词库', 'Kho từ khóa') +
     mk('ai', ICON.spark, 'AI 内核', 'Lõi AI') +
     mk('und', ICON.chip, 'AI 理解层', 'Tầng hiểu AI') + back;
 }
@@ -2992,7 +3007,7 @@ function dpAI(){
       case_type: typeLabel(currentCase().type),
       buyer: 'H**', seller: 'L**', amount: '******',
       fixed: [T('标的物','Đối tượng'), T('数量','Số lượng'), T('价格金额','Giá')],
-      facts: [{dims:[T('价格金额','Giá')], summary: T('Đơn giá 620 tệ/kiện, tổng 800 kiện, tiền hàng ****** tệ', 'Đơn giá 620 tệ/kiện, tổng 800 kiện, tiền hàng ****** tệ')}]
+      facts: [{dims:[T('价格金额','Giá')], summary: T('Đơn giá 625 tệ/kiện, tổng 800 kiện, tiền hàng ****** tệ', 'Đơn giá 625 tệ/kiện, tổng 800 kiện, tiền hàng ****** tệ')}]
     },
     task: 'summarize_case',
     guardrails: {no_legal_conclusion: true, pii_removed: true}
@@ -3077,13 +3092,27 @@ async function runSelfCheck(){
 
 const UND_TASKS = [
   {t:{zh:'识别交易主体', vi:'Xác định chủ thể giao dịch'}, d:{zh:'谁在买、谁在卖、钱转给了谁——主体错，全案皆错', vi:'Ai mua, ai bán, tiền chuyển cho ai — sai chủ thể là sai cả vụ'}},
-  {t:{zh:'抽取交易要素', vi:'Trích xuất yếu tố giao dịch'}, d:{zh:'对照 13 类要素逐项抽取，并保留命中原句', vi:'Đối chiếu 13 nhóm yếu tố, giữ lại câu gốc trúng'}},
+  {t:{zh:'抽取交易要素', vi:'Trích xuất yếu tố giao dịch'}, d:{zh:'对照 13 类要素逐项抽取，保留命中原句，并对承诺强度分级（确定承诺 / 模糊意向 / 单方陈述）', vi:'Đối chiếu 13 nhóm yếu tố, giữ câu gốc trúng, và phân loại mức cam kết (chắc chắn / mơ hồ / một phía)'}},
   {t:{zh:'标记模糊表达', vi:'Đánh dấu diễn đạt mơ hồ'}, d:{zh:'“下个月”“过几天”“差不多”这类话，将来都扯皮', vi:'“tháng sau” “vài hôm nữa” “tầm tọa” — sau này đều cãi nhau'}},
-  {t:{zh:'检出前后矛盾', vi:'Phát hiện mâu thuẫn'}, d:{zh:'同一事实两种说法（货款/借款），必须以文字固定其一', vi:'Cùng một sự kiện hai cách nói (tiền hàng / tiền vay), phải chốt bằng chữ'}},
+  {t:{zh:'检出前后矛盾', vi:'Phát hiện mâu thuẫn'}, d:{zh:'同一事实两种说法（货款/借款），必须以文字固定其一；并提取履约进度（已付 / 已交 / 未履行）', vi:'Cùng một sự kiện hai cách nói (tiền hàng / tiền vay), phải chốt bằng chữ; đồng thời trích tiến độ thực hiện (đã trả / đã giao / chưa thực hiện)'}},
   {t:{zh:'列出缺失要素', vi:'Liệt kê yếu tố thiếu'}, d:{zh:'还没落到文字上的环节，给出可执行的补存建议', vi:'Khâu chưa thành văn bản, đưa gợi ý bổ sung khả thi'}}
 ];
 
 const VAGUE_RE = /(下个月|月底|月初|过几天|过段时间|这两天|尽快|到时候|差不多|大概|左右|回头|改天|近期|好一点的|那天|有空|khoảng|sớm nhất|vài hôm|lúc đó|tùy)/;
+/* 深化两层①：承诺强度分级 —— 确定承诺 / 模糊意向 / 单方陈述 */
+const STRONG_RE = /(说好|答应|保证|一定|确认|收到|定死|定了|承诺|算数|包退|包换|谈妥|讲定|hứa|chắc chắn|đồng ý|xác nhận|đã nhận|cam kết|nhất định)/;
+const SPECIFIC_RE = /[0-9一二三四五六七八九十]{1,3}\s*[号日]/;   /* 具体日期：五号 / 9月5日 */
+const ACT_RE = /(交货|发货|发|交|到货|送到|提货|giao|gửi)/;
+/* 深化两层②：履约进度提取 —— 已付 / 已交 / 未履行 …… 的进度时间线 */
+const PROG_RULES = [
+  {k:'paid',     re:/(货款我先转你|钱我已经转|微信转你|转你|已经付|支付了|付款|打款|đã chuyển|chuyển tiền|thanh toán)/, zh:'已付款', vi:'Đã trả tiền'},
+  {k:'deposit',  re:/(订金|定金|tiền cọc|đặt cọc)/, zh:'已收订金', vi:'Đã nhận cọc'},
+  {k:'shipped',  re:/(已发|货发出|已经发|发车|到货|giao hàng|đã giao|gửi hàng)/, zh:'已交货', vi:'Đã giao hàng'},
+  {k:'unshipped',re:/(没发货|未发货|还没发|货到底哪天发|不发货|既不发货|không giao|chưa giao)/, zh:'未交货', vi:'Chưa giao hàng'},
+  {k:'refund',   re:/(退你|退款|退还|退订金|退回|hoàn tiền|hoàn lại|hoàn cọc)/, zh:'已退款', vi:'Đã hoàn tiền'},
+  {k:'refuse',   re:/(什么货款|不是货款|借我的|是借款|完全否认|不认|tiền vay|không phải tiền hàng|phủ nhận)/, zh:'对方否认', vi:'Bên kia phủ nhận'},
+  {k:'detain',   re:/(扣车|扣下|车我先扣|giữ xe)/, zh:'扣车（自力救济）', vi:'Giữ xe (tự cứu)'}
+];
 
 /* 五任务理解引擎：对（脱敏后的）文本产出结构化交易记录草案 */
 function computeUnderstanding(text, res, c){
@@ -3139,7 +3168,43 @@ function computeUnderstanding(text, res, c){
     conflict.push({a:T('承诺发货/留货','Hứa giao / giữ hàng'), b:T('实际未交付','Thực tế không giao'),
       d:T('承诺与履行状态冲突，催告与解除的前提就是固定这个时间差','Hứa và thực hiện mâu thuẫn, tiền đề để thúc giục và hủy hợp đồng là cố định khoảng thời gian này')});
 
-  return {subject, elems, vague, conflict, missing, date:new Date().toISOString()};
+  /* ── 深化两层①：承诺强度分级（确定承诺 / 模糊意向 / 单方陈述）── */
+  const strength = [];
+  const sents = res ? res.sentences : splitSentences(text);
+  sents.forEach(rawSen => {
+    if (strength.length >= 5) return;
+    const sen = rawSen;
+    /* 有具体日期（如“下个月五号”“9月5日”）算确定交期，不算模糊 */
+    const specific = SPECIFIC_RE.test(sen);
+    const soft = VAGUE_RE.test(sen) && !specific;
+    let level = null;
+    if (STRONG_RE.test(sen)) level = 'strong';                       // 说好 / 保证 / 收到
+    else if (specific && ACT_RE.test(sen)) level = 'strong';          // 交期写到了具体哪一天
+    else if (soft) level = 'soft';                                    // 到时候 / 差不多 / 再说
+    if (!level) return;
+    /* 展示时剥掉时间戳前缀，只留“谁说了什么” */
+    const clean = sen.replace(/^\s*\d{4}-\d{2}-\d{2}[T ]\d{1,2}:\d{2}\s*/, '');
+    strength.push({
+      level,
+      solo: speakers.length <= 1,                 // 只有一个说话人 → 无人回应的单方陈述
+      sen: clean.length > 46 ? clean.slice(0, 46) + '…' : clean
+    });
+  });
+
+  /* ── 深化两层②：履约进度提取（已付 / 已交 / 未履行 …… 的进度时间线）── */
+  const progHits = [];
+  const full = text || '';
+  PROG_RULES.forEach(p => {
+    const m = full.match(p.re);
+    if (!m) return;
+    const idx = m.index || 0;
+    const stamps = [...full.slice(0, idx).matchAll(/(\d{4}-\d{2}-\d{2})[T ](\d{1,2}:\d{2})/g)];
+    const last = stamps[stamps.length - 1];
+    progHits.push({k: p.k, zh: p.zh, vi: p.vi, at: last ? last[1].slice(5) + ' ' + last[2] : '', idx});
+  });
+  const progress = progHits.sort((a, b) => a.idx - b.idx);
+
+  return {subject, elems, vague, conflict, missing, strength, progress, date:new Date().toISOString()};
 }
 
 /* 五栏目卡片（边民端第三步 / L4 理解层页共用） */
@@ -3190,7 +3255,25 @@ function undCardHtml(u, compact){
       col(T('③ 模糊表达', '③ Mơ hồ'), u.vague.length ? u.vague.length + T(' 处', ' chỗ') : null, vagueItems, T('未检出模糊时间 / 数量 / 价格表述', 'Không thấy diễn đạt mơ hồ'), 'vague') +
       col(T('④ 前后矛盾', '④ Mâu thuẫn'), u.conflict.length ? u.conflict.length + T(' 组', ' cặp') : null, conflictItems, T('未检出前后矛盾', 'Không thấy mâu thuẫn'), 'conflict') +
       col(T('⑤ 缺失要素', '⑤ Yếu tố thiếu'), u.missing.length ? u.missing.length + T(' 项', ' mục') : '✓', missItems, T('适用要素已齐备', 'Đủ yếu tố áp dụng'), 'missing') +
-    '</div></div>';
+    '</div>' + deepTwoHtml(u) + '</div>';
+}
+/* 深化两层：承诺强度分级 ＋ 履约进度提取（挂在五栏目之下，不改变五栏结构） */
+function deepTwoHtml(u){
+  const st = u.strength || [], pg = u.progress || [];
+  if (!st.length && !pg.length) return '';
+  const lv = {strong:{zh:'确定承诺', vi:'Cam kết chắc chắn'}, soft:{zh:'模糊意向', vi:'Ý định mơ hồ'}};
+  const stItems = st.map(s =>
+    '<span class="sitem ' + s.level + '">' + T(lv[s.level].zh, lv[s.level].vi) +
+      (s.solo ? ' · ' + T('单方陈述', 'Một phía') : '') +
+      '<i>“' + esc(s.sen) + '”</i></span>').join('');
+  const pgItems = pg.map((p, i) =>
+    '<span class="pitem">' + (i ? '<em>→</em>' : '') + esc(T(p.zh, p.vi)) +
+      (p.at ? '<s>' + esc(p.at) + '</s>' : '') + '</span>').join('');
+  return '<div class="und-deep"><div class="ud-t">' +
+      T('深化两层 · 承诺强度分级 ＋ 履约进度提取', 'Hai tầng sâu · Phân loại mức cam kết ＋ Trích tiến độ thực hiện') + '</div>' +
+    (stItems ? '<div class="ud-l"><b>' + T('① 承诺强度分级', '① Phân loại mức cam kết') + '</b><div class="ud-b">' + stItems + '</div></div>' : '') +
+    (pgItems ? '<div class="ud-l"><b>' + T('② 履约进度提取', '② Trích tiến độ thực hiện') + '</b><div class="ud-b">' + pgItems + '</div></div>' : '') +
+    '</div>';
 }
 
 /* ---- 理解层草案编辑：文本化 ↔ 结构化 ---- */
